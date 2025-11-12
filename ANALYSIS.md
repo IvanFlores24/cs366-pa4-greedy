@@ -179,14 +179,18 @@ For input size n, compare O(n²) vs O(n log n):
 
 | Input Size (n) | Naive Time (ms) | Heap Time (ms) | Actual Speedup |
 | -------------- | --------------- | -------------- | -------------- |
-| 100            |                 |                |                |
-| 500            |                 |                |                |
-| 1,000          |                 |                |                |
-| 5,000          |                 |                |                |
+| 100            |   1.854 ms      |    0.442 ms    |      4.20x     |
+| 500            |  18.173 ms      |    3.395 ms    |      5.35x     |
+| 1,000          |  113.397 ms     |   11.080 ms    |     10.23x     |
+| 5,000          |  201.007 ms     |    7.912 ms    |     25.40x     |
 
 ### Analysis of Results
 
 [Compare theoretical predictions with empirical results. Discuss:
+
+My theoretical results did not directly match the actual speed up. The empirical results speedup was significantly lower than the theoretical predictions. Both the theoretical and empirical do show a growth in the same direction.
+The heap approach becomes significantly faster after the input size == 1,000.
+The theoretical and empirical results differ because big o notation drops constants, which can make a significant difference especially for smaller input sizes.
 
 - Do the empirical results match your theoretical predictions?
 - At what input size does the heap approach become significantly faster?

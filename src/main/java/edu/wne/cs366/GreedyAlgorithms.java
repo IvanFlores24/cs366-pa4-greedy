@@ -275,7 +275,7 @@ public class GreedyAlgorithms {
         System.out.println("==========================================\n");
 
         // Generate larger test case
-        int[] largeTest = generateRandomSticks(1000, 1, 100);
+        int[] largeTest = generateRandomSticks(100, 1, 100);
         System.out.printf("Testing with %d random sticks...%n%n", largeTest.length);
 
         compareApproaches(largeTest);
