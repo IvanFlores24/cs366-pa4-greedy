@@ -7,15 +7,20 @@ import java.util.List;
 /**
  * CS366 - PA4: Greedy Algorithms - Minimum Cost to Connect Sticks
  *
- * This assignment explores the greedy algorithm paradigm through the "Minimum Cost to Connect Sticks" problem.
- * Students will implement the SAME greedy algorithm using two different data structures:
- *   1. Greedy Naive: O(n²) using unsorted ArrayList (linear scans for minimums)
- *   2. Greedy Optimized: O(n log n) using PriorityQueue/heap (efficient minimum extraction)
+ * This assignment explores the greedy algorithm paradigm through the "Minimum
+ * Cost to Connect Sticks" problem.
+ * Students will implement the SAME greedy algorithm using two different data
+ * structures:
+ * 1. Greedy Naive: O(n²) using unsorted ArrayList (linear scans for minimums)
+ * 2. Greedy Optimized: O(n log n) using PriorityQueue/heap (efficient minimum
+ * extraction)
  *
- * This demonstrates how data structure selection dramatically affects performance even when
+ * This demonstrates how data structure selection dramatically affects
+ * performance even when
  * the underlying algorithm (greedy strategy) remains identical.
  *
- * Problem: You have n sticks of varying lengths. The cost to connect two sticks is the sum of their lengths.
+ * Problem: You have n sticks of varying lengths. The cost to connect two sticks
+ * is the sum of their lengths.
  * Connect all sticks into one stick with minimum total cost.
  *
  * Greedy Strategy: Always connect the two smallest sticks first.
@@ -25,7 +30,7 @@ import java.util.List;
  * - Connect 5 and 4 → cost = 9, remaining = [9]
  * - Total cost = 5 + 9 = 14
  *
- * @author [Student Name]
+ * @author [Ivan Flores]
  * @date Due: November 6, 2025
  */
 public class GreedyAlgorithms {
@@ -33,85 +38,108 @@ public class GreedyAlgorithms {
     /**
      * Calculate minimum cost to connect all sticks using GREEDY NAIVE approach.
      *
-     * Greedy Strategy: Always combine the two smallest sticks first (same as optimized version).
+     * Greedy Strategy: Always combine the two smallest sticks first (same as
+     * optimized version).
      *
      * Implementation Approach:
      * - Store sticks in an UNSORTED ArrayList (keep unsorted throughout!)
-     * - Each iteration: find two minimum elements via LINEAR SCAN through unsorted list (O(n))
+     * - Each iteration: find two minimum elements via LINEAR SCAN through unsorted
+     * list (O(n))
      * - Remove them, add their sum back to list (still unsorted)
      * - Repeat until one stick remains
      *
      * Time Complexity: O(n²)
      * - n-1 iterations (combining n sticks into 1)
-     * - Each iteration: O(n) to find two minimums via linear scan + O(n) to remove elements
+     * - Each iteration: O(n) to find two minimums via linear scan + O(n) to remove
+     * elements
      * - Total: O(n) × O(n) = O(n²)
      *
      * Space Complexity: O(n) for the list
      *
-     * IMPORTANT: Keep the list UNSORTED throughout. Do NOT sort the list - this is intentional
-     *            to demonstrate the O(n²) cost of repeated linear scans for minimum extraction.
+     * IMPORTANT: Keep the list UNSORTED throughout. Do NOT sort the list - this is
+     * intentional
+     * to demonstrate the O(n²) cost of repeated linear scans for minimum
+     * extraction.
      *
-     * NOTE: The O(n²) complexity comes from using an UNSORTED list requiring O(n) scans,
-     *       NOT from the greedy algorithm itself! See connectSticksHeap() for O(n log n) version.
+     * NOTE: The O(n²) complexity comes from using an UNSORTED list requiring O(n)
+     * scans,
+     * NOT from the greedy algorithm itself! See connectSticksHeap() for O(n log n)
+     * version.
      *
      * @param sticks array of stick lengths
      * @return minimum total cost to connect all sticks
-     * @throws IllegalArgumentException if sticks array is null or has less than 2 elements
+     * @throws IllegalArgumentException if sticks array is null or has less than 2
+     *                                  elements
      */
     public static int connectSticksNaive(int[] sticks) {
         // TODO: Implement greedy naive approach with UNSORTED ArrayList
         // 1. Validate input (null check, length check)
-        if (sticks == null) || sticks.length == 0){
-            return 0;
+        if (sticks == null || sticks.length == 0) {
+            throw new IllegalArgumentException("Array cannot be null or empty");
         }
-        if (sticks.length == 1){
-            return 0;
+        if (sticks.length == 1) {
+            throw new IllegalArgumentException("Array needs at minimum of 2 sticks");
         }
 
         ArrayList<Integer> sticksList = new ArrayList<>();
         int totalStickCost = 0;
         // 2. Copy sticks to ArrayList for dynamic removal (keep UNSORTED)
-        for (int stick : sticks){
+        for (int stick : sticks) {
             sticksList.add(stick);
         }
 
         // 3. Loop while more than 1 stick remains:
-        while (sticksList.size() > 1){
+        while (sticksList.size() > 1) {
             int minIndex = 0;
-            for (int i = 1; i < sticksList.size(); i++){
-                if (sticksList.get(i) < sticksList.get(minIndex) ){
+            for (int i = 1; i < sticksList.size(); i++) {
+                if (sticksList.get(i) < sticksList.get(minIndex)) {
                     minIndex = i;
                 }
             }
-        }
-        //    a. Find index of first minimum via LINEAR SCAN through unsorted list
-        //    b. Find index of second minimum (excluding first) via LINEAR SCAN
+            // a. Find index of first minimum via LINEAR SCAN through unsorted list
+            // b. Find index of second minimum (excluding first) via LINEAR SCAN
 
-        int secondminIndex = -1;
-        for (int i = 0; i < sticksList.size(); i++){
-            if (i != minIndex){
-                if (secondminIndex == - 1 || stickList.get(i) < sticksList.get(secondminIndex)){
-                    secondminIndex = i;
+            int secondminIndex = -1;
+            for (int i = 0; i < sticksList.size(); i++) {
+                if (i != minIndex) {
+                    if (secondminIndex == -1 || sticksList.get(i) < sticksList.get(secondminIndex)) {
+                        secondminIndex = i;
+                    }
                 }
             }
+            // c. Calculate cost (sum of two minimums)
+
+            int firstMin = sticksList.get(minIndex);
+            int secondMin = sticksList.get(secondminIndex);
+            int cost = firstMin + secondMin;
+            // d. Remove the two sticks (remove larger index first!)
+            if (secondminIndex > minIndex) {
+                sticksList.remove(secondminIndex);
+                sticksList.remove(minIndex);
+            } else {
+                sticksList.remove(minIndex);
+                sticksList.remove(secondminIndex);
+            }
+            // e. Add their sum back to the list (append to end - keep UNSORTED!)
+            sticksList.add(cost);
+            // f. Add cost to total
+            totalStickCost += cost;
         }
-        //    c. Calculate cost (sum of two minimums)
-        //    d. Remove the two sticks (remove larger index first!)
-        //    e. Add their sum back to the list (append to end - keep UNSORTED!)
-        //    f. Add cost to total
         // 4. Return total cost
 
+        return totalStickCost;
 
-        throw new UnsupportedOperationException("TODO: Implement connectSticksNaive");
     }
 
     /**
      * Calculate minimum cost to connect all sticks using GREEDY OPTIMIZED approach.
      *
-     * Greedy Strategy: Always combine the two smallest sticks first (SAME as naive version).
+     * Greedy Strategy: Always combine the two smallest sticks first (SAME as naive
+     * version).
      *
      * Implementation Approach:
-     * - Use Java's PriorityQueue (min-heap) to efficiently maintain smallest elements
+     * - Use Java's PriorityQueue (min-heap) to efficiently maintain smallest
+     * elements
      * - Build heap from input: O(n)
      * - Each iteration: 2 extractions + 1 insertion = O(log n) via HEAP operations
      * - Repeat until one stick remains
@@ -124,34 +152,58 @@ public class GreedyAlgorithms {
      *
      * Space Complexity: O(n) for the heap
      *
-     * KEY INSIGHT: Same greedy algorithm as naive, but using heap instead of unsorted list
-     *              reduces time complexity from O(n²) to O(n log n)!
+     * KEY INSIGHT: Same greedy algorithm as naive, but using heap instead of
+     * unsorted list
+     * reduces time complexity from O(n²) to O(n log n)!
      *
      * @param sticks array of stick lengths
      * @return minimum total cost to connect all sticks
-     * @throws IllegalArgumentException if sticks array is null or has less than 2 elements
+     * @throws IllegalArgumentException if sticks array is null or has less than 2
+     *                                  elements
      */
     public static int connectSticksHeap(int[] sticks) {
         // TODO: Implement heap-based approach
         // 1. Validate input (null check, length check)
+        if (sticks == null || sticks.length == 0) {
+            throw new IllegalArgumentException("Array cannot be null or empty");
+        }
+        if (sticks.length == 1) {
+            throw new IllegalArgumentException("Array needs a mimum of 2 sticks");
+        }
         // 2. Create PriorityQueue<Integer> (min-heap by default)
+        PriorityQueue<Integer> minHeap = new PriorityQueue<>();
         // 3. Add all sticks to the heap
+        for (int stick : sticks) {
+            minHeap.offer(stick);
+        }
+        int totalCost = 0;
         // 4. Loop while heap size > 1:
-        //    a. Extract first minimum (poll())
-        //    b. Extract second minimum (poll())
-        //    c. Calculate cost (sum of two minimums)
-        //    d. Add their sum back to heap (offer())
-        //    e. Add cost to total
-        // 5. Return total cost
+        while (minHeap.size() > 1) {
+            int firstMin = minHeap.poll();
+            int secondMin = minHeap.poll();
+            int cost = firstMin + secondMin;
 
-        throw new UnsupportedOperationException("TODO: Implement connectSticksHeap");
+            minHeap.offer(cost);
+            totalCost += cost;
+
+            // a. Extract first minimum (poll())
+            // b. Extract second minimum (poll())
+            // c. Calculate cost (sum of two minimums)
+            // d. Add their sum back to heap (offer())
+            // e. Add cost to total
+            // 5. Return total cost
+        }
+        return totalCost;
     }
 
     /**
-     * Compare the performance of Greedy Naive vs Greedy Optimized approaches empirically.
+     * Compare the performance of Greedy Naive vs Greedy Optimized approaches
+     * empirically.
      *
-     * This method runs both implementations on the same input and measures their execution times,
-     * demonstrating the practical difference between O(n²) and O(n log n) complexity when
+     * This method runs both implementations on the same input and measures their
+     * execution times,
+     * demonstrating the practical difference between O(n²) and O(n log n)
+     * complexity when
      * using different data structures for the SAME greedy algorithm.
      *
      * @param sticks array of stick lengths
@@ -197,9 +249,9 @@ public class GreedyAlgorithms {
 
         // Example test cases
         int[][] testCases = {
-            {2, 4, 3},           // Small example from problem description
-            {1, 8, 3, 5},        // Another small example
-            {4, 3, 2, 6, 1},     // Medium example
+                { 2, 4, 3 }, // Small example from problem description
+                { 1, 8, 3, 5 }, // Another small example
+                { 4, 3, 2, 6, 1 }, // Medium example
         };
 
         System.out.println("Testing with small examples:");
@@ -236,7 +288,7 @@ public class GreedyAlgorithms {
     /**
      * Helper method to generate random stick lengths for testing.
      *
-     * @param count number of sticks to generate
+     * @param count     number of sticks to generate
      * @param minLength minimum stick length
      * @param maxLength maximum stick length
      * @return array of random stick lengths
@@ -244,7 +296,7 @@ public class GreedyAlgorithms {
     private static int[] generateRandomSticks(int count, int minLength, int maxLength) {
         int[] sticks = new int[count];
         for (int i = 0; i < count; i++) {
-            sticks[i] = minLength + (int)(Math.random() * (maxLength - minLength + 1));
+            sticks[i] = minLength + (int) (Math.random() * (maxLength - minLength + 1));
         }
         return sticks;
     }
@@ -258,7 +310,8 @@ public class GreedyAlgorithms {
         System.out.print("[");
         for (int i = 0; i < arr.length; i++) {
             System.out.print(arr[i]);
-            if (i < arr.length - 1) System.out.print(", ");
+            if (i < arr.length - 1)
+                System.out.print(", ");
         }
         System.out.println("]");
     }
