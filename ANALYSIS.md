@@ -8,11 +8,42 @@
 
 ### Greedy Choice Property Explanation
 
-[Explain what the greedy choice property means for this problem]
+[Explain what the greedy choice property means for this problem
+
+#The greedy choice property makes sure smaller sticks get combined earlier which minimlizes total cost. The total cost is decreased since smaller values contribute less to the total cost. 
+
+]
+
 
 ### Informal Proof
 
-[Provide an informal proof using exchange argument or similar technique. Consider:
+[Provide an informal proof using exchange argument or similar technique. 
+
+Proof: 
+Suppose we have sticks s1 < s2 < s3 < ...
+Assume there exists an optimal solution O that doesnt combine the first two smallest sticks (in this case s1 and s2) first. 
+
+Non Greedy Choice O:
+Lets select s3, and s2. By combining these two we still have to combine s1 later on.
+Creating a total cost of (s2 + s3) + (s1 + (s2 + s3)) = 2s2 + 2s3 + s1 
+
+Greedy choice G:
+Select s1 and s2. By combining these two we create a total cost of (s1 + s2) + (s1 + s2 + s3)
+=  2s1 + 2s2 + s3 
+
+2s1 + 2s2 + s3 < 2s2 + 2s3 + s1 
+
+2s2 + 2s3 + s1 - (s1 + 2s2) = 2s3
+2s1 + 2s2 + s3 - (s1 + 2s2) = s1 + s3
+
+s1 + s3 < 2s3
+s1 + s3 - s3 = s1
+2s3 - s3 = s3
+
+s1 < s3
+
+Conclusion:
+Thus, any solution that does not combine the smallest two sticks first can be optimized by switching to a greedy choice, so the greedy strategy of always combining the two smallest sticks is optimal.
 
 - What happens if we choose sticks other than the two smallest?
 - How does the greedy choice affect the total cost?
@@ -20,7 +51,7 @@
 
 ---
 
-## Problem 2: Time Complexity Analysis - Greedy Naive Approach
+### Problem 2: Time Complexity Analysis - Greedy Naive Approach
 
 **Analyze the time complexity of the greedy naive approach using an UNSORTED list.**
 
@@ -34,10 +65,10 @@
 
 [Explain why each iteration takes O(n) time. Consider:
 
-- Finding the first minimum in the **unsorted list**: O(?) - must scan all elements
-- Finding the second minimum in the **unsorted list**: O(?) - must scan all elements again
-- Removing elements: O(?)
-- Adding element back to the **unsorted list**: O(?)]
+- Finding the first minimum in the **unsorted list**: O(n) - must scan all elements
+- Finding the second minimum in the **unsorted list**: O(n-1) - must scan all elements again
+- Removing elements: O(n)
+- Adding element back to the **unsorted list**: O(n)]
 
 ### Total Complexity Calculation
 
@@ -45,7 +76,7 @@
 
 - Number of iterations: ?
 - Cost per iteration: ?
-- Total: ?]
+- Total: O(n log n)?]
 
 ### Recurrence Relation
 
