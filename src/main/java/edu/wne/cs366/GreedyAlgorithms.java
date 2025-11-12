@@ -61,15 +61,46 @@ public class GreedyAlgorithms {
     public static int connectSticksNaive(int[] sticks) {
         // TODO: Implement greedy naive approach with UNSORTED ArrayList
         // 1. Validate input (null check, length check)
+        if (sticks == null) || sticks.length == 0){
+            return 0;
+        }
+        if (sticks.length == 1){
+            return 0;
+        }
+
+        ArrayList<Integer> sticksList = new ArrayList<>();
+        int totalStickCost = 0;
         // 2. Copy sticks to ArrayList for dynamic removal (keep UNSORTED)
+        for (int stick : sticks){
+            sticksList.add(stick);
+        }
+
         // 3. Loop while more than 1 stick remains:
+        while (sticksList.size() > 1){
+            int minIndex = 0;
+            for (int i = 1; i < sticksList.size(); i++){
+                if (sticksList.get(i) < sticksList.get(minIndex) ){
+                    minIndex = i;
+                }
+            }
+        }
         //    a. Find index of first minimum via LINEAR SCAN through unsorted list
         //    b. Find index of second minimum (excluding first) via LINEAR SCAN
+
+        int secondminIndex = -1;
+        for (int i = 0; i < sticksList.size(); i++){
+            if (i != minIndex){
+                if (secondminIndex == - 1 || stickList.get(i) < sticksList.get(secondminIndex)){
+                    secondminIndex = i;
+                }
+            }
+        }
         //    c. Calculate cost (sum of two minimums)
         //    d. Remove the two sticks (remove larger index first!)
         //    e. Add their sum back to the list (append to end - keep UNSORTED!)
         //    f. Add cost to total
         // 4. Return total cost
+
 
         throw new UnsupportedOperationException("TODO: Implement connectSticksNaive");
     }
